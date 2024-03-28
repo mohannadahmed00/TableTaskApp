@@ -3,12 +3,9 @@
     <style name="Base.Theme.TableTaskApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:textViewStyle">@style/NormalTextStyle</item>
+        <item name="android:editTextStyle">@style/NormalTextStyle</item>
     </style>
 
     <style name="Theme.TableTaskApp" parent="Base.Theme.TableTaskApp" />
-    <style name="NormalTextStyle">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:maxLines">1</item>
-    </style>
 </resources>

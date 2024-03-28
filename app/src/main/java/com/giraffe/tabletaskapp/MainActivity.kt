@@ -6,8 +6,10 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.giraffe.tabletaskapp.adapters.RowsAdapter
 import com.giraffe.tabletaskapp.databinding.ActivityMainBinding
 import com.giraffe.tabletaskapp.models.RowModel
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
         }
         adapter = RowsAdapter(getDates())
         binding.rvRows.adapter = adapter
+        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        val dividerDrawable = ContextCompat.getDrawable(this, R.drawable.horizontal_line) ?: return
+        dividerItemDecoration.setDrawable(dividerDrawable)
+        binding.rvRows.addItemDecoration(dividerItemDecoration)
 
     }
 
