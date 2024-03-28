@@ -5,16 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tv_dates"
-        android:gravity="center"
         android:layout_width="0dp"
-        app:layout_constraintVertical_weight="1"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:gravity="center"
         android:paddingHorizontal="16dp"
         android:text="@string/dates"
         app:layout_constraintBottom_toTopOf="@id/rv_rows"
@@ -22,7 +19,8 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_weight="1" />
 
     <include
         android:id="@+id/text1"
@@ -76,13 +74,15 @@
         android:id="@+id/rv_rows"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:itemCount="5"
-        tools:listitem="@layout/row_item"
-        app:layout_constraintVertical_weight="20"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_dates" />
+        app:layout_constraintTop_toBottomOf="@id/tv_dates"
+        app:layout_constraintVertical_weight="20"
+        tools:itemCount="5"
+        tools:listitem="@layout/row_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

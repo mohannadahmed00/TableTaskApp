@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.giraffe.tabletaskapp.adapters.RowsAdapter
 import com.giraffe.tabletaskapp.databinding.ActivityMainBinding
 import com.giraffe.tabletaskapp.models.RowModel
 import java.time.LocalDate
@@ -16,6 +17,7 @@ import java.time.temporal.ChronoUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: RowsAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +30,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        getDates()
+        adapter = RowsAdapter(getDates())
+        binding.rvRows.adapter = adapter
 
     }
 
