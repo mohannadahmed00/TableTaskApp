@@ -4,10 +4,10 @@ import java.time.LocalDate
 
 data class RowModel(
     val date: LocalDate,
-    var text1: Double = 0.0,
-    var text2: Double = 0.0,
-    val text4: String = "",
+    var num1: Double = 0.0,
+    var num2: Double = 0.0,
+    var note: String = "",
 ) {
-    val text3: Double
-        get() = text1 - text2
+    val result: Double
+        get() = num1 - num2
 }
