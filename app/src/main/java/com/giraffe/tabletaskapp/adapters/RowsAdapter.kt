@@ -12,14 +12,8 @@ import com.giraffe.tabletaskapp.models.RowModel
 class RowsAdapter(private val rows: List<RowModel>) :
     RecyclerView.Adapter<RowsAdapter.RowViewHolder>() {
 
-    inner class RowViewHolder(binding: RowItemBinding) :
+    inner class RowViewHolder(val binding: RowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val tvDate = binding.tvDate
-        val edtText1 = binding.edtText1
-        val edtText2 = binding.edtText2
-        val tvResult = binding.tvResult
-        val edtNote = binding.edtNote
-
         init {
             binding.edtText1.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -90,7 +84,7 @@ class RowsAdapter(private val rows: List<RowModel>) :
         }
 
         private fun updateResult() {
-            tvResult.text = rows[adapterPosition].result.toString()
+            binding.tvResult.text = rows[adapterPosition].result.toString()
         }
     }
 
@@ -103,11 +97,11 @@ class RowsAdapter(private val rows: List<RowModel>) :
 
     override fun onBindViewHolder(holder: RowViewHolder, position: Int) {
         val item = rows[position]
-        holder.tvDate.text = item.date.toString()
-        holder.edtText1.setText(item.num1.toString())
-        holder.edtText2.setText(item.num2.toString())
-        holder.tvResult.text = item.result.toString()
-        holder.edtNote.setText(item.note)
+        holder.binding.tvDate.text = item.date.toString()
+        holder.binding.edtText1.setText(item.num1.toString())
+        holder.binding.edtText2.setText(item.num2.toString())
+        holder.binding.tvResult.text = item.result.toString()
+        holder.binding.edtNote.setText(item.note)
     }
 
     private fun isValidNumber(text: String) = text.isNotBlank() && TextUtils.isDigitsOnly(text)

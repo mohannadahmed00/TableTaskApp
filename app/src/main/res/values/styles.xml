@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="NormalTextStyle">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:textColor">@color/green</item>
-    </style>
-</resources>
