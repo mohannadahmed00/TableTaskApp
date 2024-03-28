@@ -17,14 +17,9 @@ import java.time.ZoneId
 class RowsAdapter(private val rows: List<RowModel>) :
     RecyclerView.Adapter<RowsAdapter.RowViewHolder>() {
 
-    inner class RowViewHolder(binding: RowItemBinding) : RecyclerView.ViewHolder(binding.root) {
-            val tvDate:TextView = binding.tvDate
-            val edtText1:EditText = binding.edtText1
-            val edtText2:EditText = binding.edtText2
-            val tvText3:TextView = binding.tvText3
-            val edtText4:EditText = binding.edtText4
-        /*fun bind(item: RowModel) {
-
+    inner class RowViewHolder(private val binding: RowItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: RowModel) {
             binding.tvDate.text = item.date.toString()
             binding.edtText1.setText(item.text1.toString())
             binding.edtText2.setText(item.text2.toString())
@@ -37,12 +32,13 @@ class RowsAdapter(private val rows: List<RowModel>) :
                     start: Int,
                     count: Int,
                     after: Int
-                ) {}
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(text1: Editable?) {
-                    if(isValidNumber(text1.toString())) item.text1 = text1.toString().toDouble()
+                    if (isValidNumber(text1.toString())) item.text1 = text1.toString().toDouble()
                 }
             })
             binding.edtText2.addTextChangedListener(object : TextWatcher {
@@ -57,7 +53,8 @@ class RowsAdapter(private val rows: List<RowModel>) :
 
                 override fun afterTextChanged(text2: Editable?) {
                     text2?.let {
-                        if(isValidNumber(text2.toString())) item.text2 = text2.toString().toDouble()
+                        if (isValidNumber(text2.toString())) item.text2 =
+                            text2.toString().toDouble()
                         val text1 = binding.edtText1.text.toString()
                         if (isValidNumber(text1) && isValidNumber(text2.toString())) {
                             val num1 = text1.toInt()
@@ -68,7 +65,7 @@ class RowsAdapter(private val rows: List<RowModel>) :
 
                 }
             })
-        }*/
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RowViewHolder {
@@ -78,54 +75,8 @@ class RowsAdapter(private val rows: List<RowModel>) :
 
     override fun getItemCount() = rows.size
 
-    override fun onBindViewHolder(holder: RowViewHolder, position: Int){
-        //holder.bind(rows[position])
-        val item = rows[position]
-        holder.tvDate.text = item.date.toString()
-        holder.edtText1.setText(item.text1.toString())
-        holder.edtText2.setText(item.text2.toString())
-        holder.tvText3.text = item.text3.toString()
-        holder.edtText4.setText(item.text4)
+    override fun onBindViewHolder(holder: RowViewHolder, position: Int) =
+        holder.bind(rows[position])
 
-        holder.edtText1.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(text1: Editable?) {
-                if(isValidNumber(text1.toString())) item.text1 = text1.toString().toDouble()
-            }
-        })
-        holder.edtText2.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(text2: Editable?) {
-                if(isValidNumber(text2.toString())) item.text2 = text2.toString().toDouble()
-            }
-        })
-    }
-
-
-    private fun isValidNumber(text:String) = text.isNotBlank() && TextUtils.isDigitsOnly(text)
-
-
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    override fun getItemId(position: Int): Long {
-        // Return a unique ID for the item at the given position
-        return rows[position].date.atStartOfDay(ZoneId.of("en")).toEpochSecond()
-    }
-
-
+    private fun isValidNumber(text: String) = text.isNotBlank() && TextUtils.isDigitsOnly(text)
 }
