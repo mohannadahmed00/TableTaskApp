@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,12 +20,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.giraffe.tabletaskapp.adapters.RowsAdapter
 import com.giraffe.tabletaskapp.databinding.ActivityMainBinding
 import com.giraffe.tabletaskapp.models.RowModel
-import java.time.LocalDate
-import java.time.Month
-import java.time.temporal.ChronoUnit
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RowsAdapter.OnRowChanged {
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleWindowInsets(binding.main)
-        initRecycler(RowsAdapter(getDates()))
+        initRecycler(RowsAdapter(onRowChanged = this))
         handleClicks()
     }
 
@@ -75,23 +74,11 @@ class MainActivity : AppCompatActivity() {
         val dividerDrawable = ContextCompat.getDrawable(this, R.drawable.horizontal_line) ?: return
         dividerItemDecoration.setDrawable(dividerDrawable)
         binding.rvRows.addItemDecoration(dividerItemDecoration)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getDates(): List<RowModel> {
-        val startDate = LocalDate.of(2023, Month.JANUARY, 1)
-        val lastDay = getLastDayOfCurrentYear()
-        val daysBetween = ChronoUnit.DAYS.between(startDate, lastDay)
-        val rows = mutableListOf<RowModel>()
-        for (i in 0..daysBetween) {
-            rows.add(RowModel(startDate.plusDays(i)))
+        viewModel.rowsLiveData.value?.let {
+            adapter.updateList(it.toMutableList())
         }
-        return rows
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getLastDayOfCurrentYear() =
-        LocalDate.of((LocalDate.now().year) + 1, 1, 1).minusDays(1)
 
     private fun showDialog(title: String, onConfirm: (newTitle: String) -> Unit) {
         val dialog = Dialog(this)
@@ -115,5 +102,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "MainActivity"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onChange(rowModel: RowModel, position: Int) {
+        viewModel.updateList(rowModel, position)
     }
 }

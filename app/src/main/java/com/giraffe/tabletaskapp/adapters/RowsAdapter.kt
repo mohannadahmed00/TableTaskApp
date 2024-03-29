@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.giraffe.tabletaskapp.databinding.RowItemBinding
 import com.giraffe.tabletaskapp.models.RowModel
 
-class RowsAdapter(private val rows: List<RowModel>) :
+class RowsAdapter(
+    private var rows: MutableList<RowModel> = mutableListOf(),
+    private val onRowChanged: OnRowChanged
+) :
     RecyclerView.Adapter<RowsAdapter.RowViewHolder>() {
 
     inner class RowViewHolder(val binding: RowItemBinding) :
@@ -77,6 +80,7 @@ class RowsAdapter(private val rows: List<RowModel>) :
                     count: Int
                 ) {
                     rows[adapterPosition].note = note.toString()
+                    updateResult()
                 }
 
                 override fun afterTextChanged(s: Editable?) {}
@@ -85,6 +89,7 @@ class RowsAdapter(private val rows: List<RowModel>) :
 
         private fun updateResult() {
             binding.tvResult.text = rows[adapterPosition].result.toString()
+            onRowChanged.onChange(rows[adapterPosition], adapterPosition)
         }
     }
 
@@ -104,5 +109,14 @@ class RowsAdapter(private val rows: List<RowModel>) :
         holder.binding.edtNote.setText(item.note)
     }
 
+    fun updateList(list: MutableList<RowModel>) {
+        this.rows = list
+        notifyDataSetChanged()
+    }
+
     private fun isValidNumber(text: String) = text.isNotBlank() && TextUtils.isDigitsOnly(text)
+
+    interface OnRowChanged {
+        fun onChange(rowModel: RowModel, position: Int)
+    }
 }
